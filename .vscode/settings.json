@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "css": "postcss",
+    "scss": "postcss",
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "st7789.h": "c",
+    "main.h": "c",
+    "fonts.h": "c"
+  }
+}
