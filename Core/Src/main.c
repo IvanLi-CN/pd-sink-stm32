@@ -105,7 +105,6 @@ int main(void) {
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   ST7789_Init();
-  HAL_Delay(1000);
   ST7789_Fill_Color(WHITE);
 
   uint8_t color = 0;
@@ -115,11 +114,39 @@ int main(void) {
   /* USER CODE BEGIN WHILE */
   while (1) {
     /* USER CODE END WHILE */
-    // HAL_Delay(10);
-    // HAL_GPIO_TogglePin(BLK_GPIO_Port, BLK_Pin);
-    color = color ? 0 : 1;
-    ST7789_Fill_Color(color ? RED : WHITE);
+
     /* USER CODE BEGIN 3 */
+    // HAL_Delay(1000);
+    // HAL_GPIO_TogglePin(BLK_GPIO_Port, BLK_Pin);
+    ST7789_Test();
+    color += 1;
+    color %= 7;
+    // 七彩色
+    switch (color) {
+      case 0:
+        ST7789_Fill_Color(WHITE);
+        break;
+      case 1:
+        ST7789_Fill_Color(MAGENTA);
+        break;
+      case 2:
+        ST7789_Fill_Color(RED);
+        break;
+      case 3:
+        ST7789_Fill_Color(YELLOW);
+        break;
+      case 4:
+        ST7789_Fill_Color(GREEN);
+        break;
+      case 5:
+        ST7789_Fill_Color(CYAN);
+        break;
+      case 6:
+        ST7789_Fill_Color(BLUE);
+        break;
+      default:
+        break;
+    }
   }
   /* USER CODE END 3 */
 }
@@ -159,10 +186,10 @@ void SystemClock_Config(void) {
   RCC_ClkInitStruct.ClockType =
       RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
     Error_Handler();
   }
 }
@@ -181,7 +208,7 @@ static void MX_I2C1_SMBUS_Init(void) {
 
   /* USER CODE END I2C1_Init 1 */
   hsmbus1.Instance = I2C1;
-  hsmbus1.Init.Timing = 0x0060112F;
+  hsmbus1.Init.Timing = 0x00C12166;
   hsmbus1.Init.AnalogFilter = SMBUS_ANALOGFILTER_ENABLE;
   hsmbus1.Init.OwnAddress1 = 2;
   hsmbus1.Init.AddressingMode = SMBUS_ADDRESSINGMODE_7BIT;
@@ -192,7 +219,7 @@ static void MX_I2C1_SMBUS_Init(void) {
   hsmbus1.Init.NoStretchMode = SMBUS_NOSTRETCH_DISABLE;
   hsmbus1.Init.PacketErrorCheckMode = SMBUS_PEC_DISABLE;
   hsmbus1.Init.PeripheralMode = SMBUS_PERIPHERAL_MODE_SMBUS_SLAVE;
-  hsmbus1.Init.SMBusTimeout = 0x00008186;
+  hsmbus1.Init.SMBusTimeout = 0x0000830D;
   if (HAL_SMBUS_Init(&hsmbus1) != HAL_OK) {
     Error_Handler();
   }
@@ -263,7 +290,7 @@ static void MX_SPI1_Init(void) {
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
